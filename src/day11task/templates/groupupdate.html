@@ -1,0 +1,19 @@
+{% extends "Base.html" %}	
+{% block content %}
+
+<h1>用户组管理</h1>
+	<form action='/zhujiguanli/groupupdate/{{groupobj.id}}/' method='POST'>
+	{% csrf_token %}
+		用户组:<input type="text" name="groupname" value={{groupobj.groupname}} /><span class="msgstatus">{{status}}</span>
+		<br/>
+		<br/>
+		<input type='submit' value='提交更新'/>
+	</form>
+	<a href='/zhujiguanli/group'>返回</a>
+
+	<script type="text/javascript">
+
+		setInterval('HideMsg()',5000);
+
+	</script>
+{% endblock %}

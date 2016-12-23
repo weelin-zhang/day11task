@@ -1,0 +1,46 @@
+{% extends "Base.html" %}	
+{% load mymethod %}
+{% block content %}
+<div style="border:1px solid grey;width :1200;height:150;margin:10 0 auto;">
+	<h1>用户组管理</h1>
+	<form action='/zhujiguanli/group/' method='POST'>
+	{% csrf_token %}
+<!--显示多条数据用for循环用户名:{{form.username}}-->
+		用户组:<input type="text" name="groupname" placeholder="groupname"/>
+		<br/>
+		<br/>
+<!--{{form.email}}-->
+		<input type='submit' value='添加'/><span style="color:red">{{status}}</span>
+	</form>
+</div>
+
+<div style="width :1200px;height:100px;border-top:1px solid grey;margin:20px 0 auto;">
+	<h4>用户组列表</h4>
+	<form action="/zhujiguanli/group/" method="POST">
+	{% csrf_token %}
+	<table border=1px>
+		<tr>
+			<th style="color:red">Delete</th>
+			<th>用户组名</th>
+		</tr>
+		{% if groups %}
+			{% for item in groups %}
+				<tr>
+					<td><input type="checkbox" name="delete" value={{item.id}}>delete</td>
+					<td>{{item.groupname}}</td>
+					<td><a href='/zhujiguanli/groupupdate/{{item.id}}/'>编辑</a></td>
+				</tr>	
+			
+			{% endfor %}
+			<input style="background-color:red" type='submit' value="Update"/><span class="msgstatus">{{deletestatus}}</span>
+			</form>
+		{% endif %}
+	</table>
+</div>
+
+	<script type="text/javascript">
+		setInterval('HideMsg()',3000);
+
+	</script>
+{% endblock %}
+

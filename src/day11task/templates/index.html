@@ -1,0 +1,19 @@
+{% extends "Base.html" %}	
+{% block content %}
+	
+	<p>当前登录用户:{{user}}</p>
+	
+	 <li>
+	 	<a href='/zhujiguanli/deleteuser/'>用户管理</a>
+	 </li>
+	 <li>
+	 	<a href='/zhujiguanli/usertype/'>用户类型管理</a>
+	 </li>
+	 <li>
+	 	<a href='/zhujiguanli/group'>用户组管理</a>
+	 </li>
+	 <li>
+	 	<a href='/zhujiguanli/host'>主机管理</a>
+	 </li>
+
+{% endblock %}

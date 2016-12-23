@@ -1,0 +1,32 @@
+{% extends "Base.html" %}	
+
+{% block content %}
+
+<div style="width:1200px;margin:0 auto">
+	<form style="text-align:center;margin-top:20px;" action='/zhujiguanli/adduser/' method='POST'>
+<!--显示多条数据用for循环用户名:{{form.username}}-->
+		<span>----**********Add Users********----</sapn>
+		<br/>
+		<br/>
+		<div style="margin:auto auto">
+		姓名:{{form.username}}
+		<br/>
+		密码:{{form.password}}
+		<br/>
+		邮箱:{{form.email}}
+		<br/>
+		电话:{{form.phone}}
+		<br/>
+		<div style="margin:20px 0 auto" >
+		<span>用户类型选择(可多选):</span>
+		<input type="checkbox" name="admin1" value=1>超级管理员
+		<input type="checkbox" name="admin2" value=2>管理员
+		<input type="checkbox" name="admin3" value=3>普通管理员<br/><br/>
+		</div>
+		</div>
+	<!--{{form.email}}
+		{{form.as_table}}-->
+		<input type='submit' value='提交'/><span style="color:red">{{status}}</span>
+	</form>
+</div>
+{% endblock %}

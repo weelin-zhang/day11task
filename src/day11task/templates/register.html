@@ -1,0 +1,81 @@
+{% extends "Base.html" %}	
+
+{% block content %}
+
+<div style="margin-left:45%;">
+	<form action='/zhujiguanli/register/' method='POST'>
+		{% csrf_token %}
+	<!--显示多条数据用for循环用户名:{{form.username}}-->
+		姓名:<input type="text" id="u_name" name="username" placeholder="username" onblur="DoCheckUser()";/><span id="ssss">fsdfs</span>
+		<br/>
+		<p>密码:{{form.password}}</p>
+		<p>邮箱:{{form.email}}</p>
+		<p>手机:{{form.phone}}</p>
+		用户类型
+		<select name="usertype">
+		<!--
+ 		<option value="超级管理员"selected="selected">超级管理员</option>
+  		<option value="普通管理员">普通管理员</option>-->
+  		{% for usertype in usertypes %}
+		<option type="checkbox" name="usertype" value="{{usertype.id}}">{{usertype.name}}
+		{% endfor %}
+		</select>
+		<br/>
+		<span>用户属组(可多选)</span>
+		{% for group in usergroups %}
+		<br/>
+		<input type="checkbox" name={{group.groupname}} value={{group.id}}>{{group.groupname}}
+		{% endfor %}
+		<br/>
+	<!--{{form.email}}
+		{{form.as_table}}-->
+		<br/>
+		<input style="background-color:#eee;margin-left:0;width:100" type='submit' value='提交'/><span style="color:red">{{status}}</span>
+	</form>
+</div>
+
+<script type="text/javascript">
+
+//跨站伪造提交ajax 加上这些代码
+	var csrftoken = $.cookie('csrftoken');
+ 
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+//跨站伪造提交ajax 加上这些代码
+	function DoCheckUser(){
+		var u_name = $('#u_name').val();
+		$.ajax(
+		{
+			url:'/zhujiguanli/register/',
+			type:'POST',
+			data:{in_name:u_name},
+			success:function(arg){
+				var res = jQuery.parseJSON(arg);
+				//$('#u_name').val(res.checkuserstatus)
+				$('#ssss').text(res.checkuserstatus)
+				console.log('ajax 提交 success');
+				console.log(res.checkuserstatus);
+			
+			},
+			error:function(arg){
+				console.log(arg);
+				console.log('ajax 提交 fail');
+			
+			},
+			
+		}
+	);
+}
+</script>
+	
+
+{% endblock %}

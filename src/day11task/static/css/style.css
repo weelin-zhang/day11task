@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+.l_oug_link_hide{
+	display:none;
+}
+
+
+#base_h1{
+	width:1000px;
+	color:green;
+	margin:20px auto;
+	}

@@ -1,0 +1,34 @@
+{% extends "Base.html" %}	
+{% load mymethod %}
+{% block content %}
+<h1>主机信息更改</h1>
+
+<form  action='/zhujiguanli/hostupdate/{{hostobj.id}}/' method='POST'>
+		{% csrf_token %}
+		<p>id:{{hostobj.id}}</p>
+<!--显示多条数据用for循环用户名:{{form.username}}-->
+		主机名:<input type="text" name="hostname" value={{hostobj.hostname}} />
+		<br/>
+		主机IP:<input type="text" name='ip' value={{hostobj.ip}} />
+		<br/>
+		用户属组
+		<select name="usergroup">
+		{% for group in usergroups %}
+			{% ifequal group hostobj.usergroup %}   
+ 			<option value={{group.id}} selected="selected">{{group.groupname}}</option>
+ 			{% else %}
+ 			<option value={{group.id}}>{{group.groupname}}</option>
+ 			{% endifequal %}
+  		{% endfor %}
+		</select>
+		<br/>
+		<input style="background-color:green" type='submit' value='提交更改'/><span class="msgstatus" style="color:red">{{status}}</span>
+	</form>
+	<a href='/zhujiguanli/host/'>返回</a>
+	
+	<script type="text/javascript">
+
+		setInterval('HideMsg()',5000);
+
+	</script>
+{% endblock %}

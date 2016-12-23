@@ -1,0 +1,35 @@
+{% extends "Base.html" %}	
+{% load mymethod %}
+{% block content %}
+<div style="border:1px solid grey;width :1200;height:150;margin:10 0 auto;">
+	<h1>用户类型管理</h1>
+	<form action='/zhujiguanli/usertype/' method='POST'>
+		用户类型:<input type="text" name="usertype" placeholder="usertype"/>
+		<br/>
+		<br/>
+		<input type='submit' vlue='添加'/><span style="color:red">{{status}}</span>
+	</form>
+</div>
+
+<div style="width :1200px;height:100px;border-top:1px solid grey;margin:20px 0 auto;">
+	<h4>用户类型</h4>
+	<form action="/zhujiguanli/usertype/" method="POST">
+	<table border=1px>
+		<tr>
+			<th style="color:red">Delete</th>
+			<th>用户组名</th>
+		</tr>
+		{% if usertypes %}
+			{% for item in usertypes %}
+				<tr>
+					<td><input type="checkbox" name="delete" value={{item.id}}>delete</td>
+					<td>{{item.name}}</td>
+				</tr>	
+			
+			{% endfor %}
+			<input style="background-color:red" type='submit' value="Update"/><span>{{deletestatus}}</span>
+			</form>
+		{% endif %}
+	</table>
+</div>
+{% endblock %}

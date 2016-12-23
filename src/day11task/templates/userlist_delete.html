@@ -1,0 +1,47 @@
+{% extends "Base.html" %}	
+{% load mymethod %}
+{% block content %}
+
+	<!--显示单条数据-->
+	{% if data %}
+		<hr/>
+		{% if groupid %}
+		<form action="/zhujiguanli/deleteuser/{{groupid}}/" method="POST">
+		<h1 style="color:green">Users Of {{groupid}}<h1>
+		{% else %}
+		<form action="/zhujiguanli/deleteuser/" method="POST">
+		{% endif %}
+		{% csrf_token %}
+		<table border='1'>
+			<tr>
+				<th style="color:red">Delete</th>
+				<th>UserName</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th>Group</th>
+				<th>CreateDate</th>
+				<th>UpdateDate</th>
+			</tr>
+			<!--显示多条数据用for循环-->
+			{% for item in data%}
+				<tr>
+					<td><input type="checkbox" name={{item.username}} value={{item.id}}>delete</td>
+					<td>{{item.username}}</td>
+					<td>{{item.email}}</td>
+					<td>{{item.phone}}</td>
+					<td>{% get_groupnameofuser item %}</td>
+					<td>{{item.create_date|date:'Y-m-d h:i:s'}}</td>
+					<td>{{item.update_date|date:'Y-m-d h:i:s'}}</td>
+				</tr>	
+			
+			{% endfor %}
+			</table>
+			<input type='submit' value="update"/>
+			</form>
+	{% else %}
+		<h1 style="color:red">No Records Of {{groupid}}</h1>
+	{% endif %}
+		
+	</table>
+
+{% endblock %}

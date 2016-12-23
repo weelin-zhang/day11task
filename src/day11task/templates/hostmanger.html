@@ -1,0 +1,121 @@
+{% extends "Base.html" %}	
+{% load mymethod %}
+{% block content %}
+<div style="border:1px solid grey;width :1200;height:200;margin:50 0 auto;">
+	<h1>添加主机</h1>
+	<form  action='/zhujiguanli/host/' method='POST'>
+		{% csrf_token %}
+<!--显示多条数据用for循环用户名:{{form.username}}-->
+		主机名:<input type="text" name="hostname" placeholder="hostname"/>
+		<br/>
+		主机IP:<input type="text" name='ip' placeholder="ip"/>
+		<br/>
+		用户属组
+		<select name="usergroup">
+		{% for group in usergroups %}
+ 			<option value={{group.id}}>{{group.groupname}}</option>
+  		{% endfor %}
+		</select>
+		<br/>
+		{{form.as_table}}
+		<input style="background-color:green" type='submit' value='添加'/><span class="msgstatus" style="color:red">{{status}}</span>
+	</form>
+</div>
+
+<div style="width :1200px;height:100px;border-top:1px solid grey;margin:20px 0 auto;">
+	<h4>主机列表</h4>
+	<table border=1px>
+		<tr>
+			<th style="color:red">Delete</th>
+			<th>主机名</th>
+			<th>IP</th>
+			<th>所属用户组</th>
+			<th>修改</th>
+		</tr>
+		{% if hosts %}
+			{% for item in hosts %}
+			<form action="/zhujiguanli/host/" method="POST">
+			{% csrf_token %}
+				<tr>
+					<td><input id="cbox_{{item.id}}" type="checkbox" value={{item.id}} onclick="CheckboxChange(this);" />delete</td>
+					<td>{{item.hostname}}</td>
+					<td>{{item.ip}}</td>
+					<td>{% get_groupnameofhost item %}</td>
+					<td><a href='/zhujiguanli/hostupdate/{{item.id}}/'>编辑</a></td>
+				</tr>
+				{% endfor %}
+				</form>
+				<input style="background-color:red" type='button' value="update" onclick="Update();"/>					
+			
+		{% endif %}
+	</table>
+</div>
+
+
+<script type="text/javascript">
+
+//跨站伪造提交ajax 加上这些代码
+	var csrftoken = $.cookie('csrftoken');
+ 
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+//跨站伪造提交ajax 加上这些代码
+	var arry=[];
+	var str='';
+	function CheckboxChange(arg){
+		var cboxobj=$("#"+arg.id)
+		var deleteid=cboxobj.attr('value');
+		var index=str.indexOf(deleteid)
+		if(cboxobj.prop('checked')){
+			if(index<0){arry.push(deleteid);}
+			console.log(arry);
+		}else{
+			
+			if(index>=0){arry.splice(index/2,1);}
+			console.log(arry);
+		}
+		str=arry.join('-');
+		console.log(str);
+	}
+	
+	function Update(){
+		$.ajax(
+				{
+					url:'/zhujiguanli/host/',
+					type:'POST',
+					data:{del:str},
+					success:function(arg){
+						console.log('ajax 提交 success');
+						var res = jQuery.parseJSON(arg);
+						
+						if(res.failajax){alert(res.failajax);return}
+						console.log(res.successajax);
+						console.log('refresh');
+						window.location.href='/zhujiguanli/host/';
+					},
+					error:function(arg){
+						console.log('ajax 提交 fail');
+					},
+					
+				}
+			);
+		
+	}
+	
+	
+	
+	
+		setInterval('HideMsg()',5000);
+
+</script>
+
+{% endblock %}

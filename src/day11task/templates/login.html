@@ -1,0 +1,18 @@
+{% extends "Base.html" %}	
+{% block content %}
+
+<div style="margin-left:45%;">
+	<form action='/zhujiguanli/login/' method='POST'>
+		{% csrf_token %}
+		<p>姓名:{{form.username}}</p>
+		<p>密码:{{form.password}}</p>
+		<input style="background-color:#fff;margin-left:60;width:100" type='submit' value='登录'/><span style="color:red">{{status}}</span>
+	</form>
+</div>
+
+<script>
+	$('#l_oug_link').addClass('l_oug_link_hide');
+	console.log($('#l_oug_link').text())
+
+</script>
+{% endblock %}
